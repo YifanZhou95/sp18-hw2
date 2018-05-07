@@ -89,15 +89,16 @@ public class GlobeSortServer {
             double startTime = System.nanoTime(); 
             Integer[] values = req.getValuesList().toArray(new Integer[req.getValuesList().size()]);
             Arrays.sort(values);
-            IntArray.Builder responseBuilder = IntArray.newBuilder();
+            double sortTime = (System.nanoTime() - startTime)/1000000.;
+            System.out.println("Time for sortIntegers is: " + sortTime);
+	    IntArray.Builder responseBuilder = IntArray.newBuilder();
             for(Integer val : values) {
                 responseBuilder.addValues(val);
             }
-            IntArray response = responseBuilder.build();
+            responseBuilder.setSortTime(sortTime);
+	    IntArray response = responseBuilder.build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-            double estimatedTime = (System.nanoTime() - startTime)/1000000.;
-            System.out.println("Time for sortIntegers is: " + estimatedTime);
         }
     }
 }
